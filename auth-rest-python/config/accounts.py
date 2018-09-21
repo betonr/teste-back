@@ -1,0 +1,7 @@
+# FACEBOOK INFOS
+__FACEBOOK_SETTINGS__ = {
+    'app_id': '497482067332063',
+    'app_secret': '5a335fdafa388775bf2d1e9f4b1460b8'
+}
+
+# GOOGLE INFOS
