@@ -47,7 +47,7 @@ class Login():
                 raise Exception(401)
 
             access_token = create_access_token(identity=user_info['email'],expires_delta=False)
-            return {'token': access_token, 'me': user}
+            return {'token': access_token, 'me': user_info}
 
         except Exception as e:
             message = {

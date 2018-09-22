@@ -2,6 +2,6 @@ from flask import jsonify
 
 from app import app
 
-@app.route('/status')
+@app.route('/')
 def status():
-    return jsonify({'status': True})
+    return jsonify({'status': 'API AUTH - RODANDO COM SUCESSO'})

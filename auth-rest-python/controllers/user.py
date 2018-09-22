@@ -34,7 +34,7 @@ class User():
     def register(name, email, photo):
         newUser = UserModel(name=name, email=email, photo=photo, func=Function.USER.value, password="")
         newUser.save()
-        return {'user': newUser.to_json()}
+        return {'user': newUser.to_json()['user'] }
 
     def compare_password(email, password):
         user = UserModel.query.filter_by(email=email).first()
