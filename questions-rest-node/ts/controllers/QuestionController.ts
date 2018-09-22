@@ -66,7 +66,7 @@ export class QuestionController {
         try {
             let question = await QuestionModel.findOne({ _id: id })
             question.remove()
-            return {success:true}
+            return { success: true }
         } catch(_) {
             throw {
                 status: 404,
@@ -110,7 +110,7 @@ export class QuestionController {
                 throw {
                     errors: [{ 
                         field: ['user_id'],
-                        messages: ['Você não pode votar em uma pergunta que você fez!']
+                        messages: ['Você não pode votar em uma pergunta que você criou!']
                     }],
                     status: 409
                 }
@@ -300,7 +300,6 @@ export class QuestionController {
             }
             
         } catch(error) {
-            console.log(error)
             if(error.errors == undefined)
                 throw {
                     errors: [{

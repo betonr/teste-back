@@ -1,7 +1,7 @@
 {
   "name": "api-question",
   "version": "1.0.0",
-  "description": "API de questões e pontuação do teste de back-end para desenvolvedor da empresa Allgoo",
+  "description": "API de questões e pontuações do teste de back-end para desenvolvedor da empresa Allgoo",
   "main": "main.js",
   "scripts": {
     "dev": "nodemon dist/main.js",
@@ -17,7 +17,6 @@
     }
   },
   "dependencies": {
-    "apidoc": "^0.15.1",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
     "express": "^4.15.3",
@@ -44,6 +43,7 @@
     "@types/request": "^2.47.0",
     "@types/supertest": "^2.0.5",
     "@types/winston": "^2.3.9",
+    "apidoc": "^0.15.1",
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
     "regenerator-runtime": "^0.11.1",

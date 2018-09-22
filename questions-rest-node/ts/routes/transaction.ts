@@ -7,6 +7,7 @@ export default (app, environment): void => {
 
     app.get(environment.pathBase+"/transaction",
         authMiddlewares.authentication,
+        authMiddlewares.isAdmin,
         (_, res) => Transaction.transaction()
             .then( response => res.status(200).send(response) )
             .catch( error => res.status(error.status).send({errors: error.errors}) ))

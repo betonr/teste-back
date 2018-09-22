@@ -1,7 +1,7 @@
 /**
  * @api {get} / API Status
  * @apiGroup Status
- * @apiSuccess {String} mensagem de status da API
+ * @apiSuccess {String} status of API
  * @apiSuccessExample {json} Sucess
  *    HTTP/1.1 200 OK
  *    {
