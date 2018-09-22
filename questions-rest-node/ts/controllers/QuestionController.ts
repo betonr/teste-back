@@ -106,8 +106,7 @@ export class QuestionController {
             let date_question = new Date(questionInfo.created_at)
             date_question.setDate(date_question.getDate()+1)
 
-            // if(questionInfo.author_id == user_id.id) 
-            if(questionInfo.author_id != user_id.id) 
+            if(questionInfo.author_id == user_id.id) 
                 throw {
                     errors: [{ 
                         field: ['user_id'],
@@ -125,14 +124,14 @@ export class QuestionController {
                     status: 409
                 }
 
-            // else if(questionInfo.answers.correct.some( id => user_id.id == id) || questionInfo.answers.wrong.some( id => user_id.id == id)) 
-            //     throw {
-            //         errors: [{ 
-            //             field: ['answers'],
-            //             messages: ['Você não pode votar mais de uma vez na mesma pergunta/informação!']
-            //         }],
-            //         status: 409
-            //     }
+            else if(questionInfo.answers.correct.some( id => user_id.id == id) || questionInfo.answers.wrong.some( id => user_id.id == id)) 
+                throw {
+                    errors: [{ 
+                        field: ['answers'],
+                        messages: ['Você não pode votar mais de uma vez na mesma pergunta/informação!']
+                    }],
+                    status: 409
+                }
 
             else {
                 //response correct
