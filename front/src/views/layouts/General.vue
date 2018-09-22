@@ -1,7 +1,7 @@
 <template>
     <div class="box-general">
         <section class="box-default">
-            <div class="logo"> NOME BASE </div>
+            <div class="logo"> TEST (BACK) ALLGOO </div>
             <h1>{{ title }}</h1>
 
             <slot />

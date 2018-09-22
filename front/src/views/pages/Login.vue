@@ -70,7 +70,7 @@ export default {
                 this._openFullScreen()
                 const auth = await Authentication.loginEmail('admin', credentials)  
                 let token = auth.data.token
-                let userInfo = auth.data.me.user
+                let userInfo = auth.data.me
 
                 this.$store.dispatch('auth/setToken', token)
                 this.$store.dispatch('auth/setUser', userInfo)
@@ -133,12 +133,9 @@ export default {
             margin-right: 10px
             color: #FFF !important
 
-    .btn.google
-        background: red
-
 .box-btn-admin
         border-top: 1px solid #CCC
-        padding: 10px 0 5px 0
+        padding: 10px 0
         display: flex
         justify-content: center
 </style>

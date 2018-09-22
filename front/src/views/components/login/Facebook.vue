@@ -45,5 +45,4 @@ export default {
 <style lang="sass" scoped>
 .facebook
     background: blue
-    margin-right: 10px
 </style>

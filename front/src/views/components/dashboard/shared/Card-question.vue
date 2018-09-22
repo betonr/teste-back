@@ -14,10 +14,8 @@
 
             <p class="question">{{ question.question }}</p>
 
-            <!-- <div v-if="!closed && question.author_id != user.id"> -->
-            <div v-if="!closed && !question.answers.correct.some(id => id == user.id) && !question.answers.wrong.some(id => id == user.id)">
-                <!-- <el-button @click="votar=true" v-show="!votar && question.author_id != user.id" type="info" icon="el-icon-edit" size="small" plain round>VOTAR</el-button> -->
-                <el-button @click="votar=true" v-show="!votar" type="info" icon="el-icon-edit" size="small" plain round>VOTAR</el-button>
+            <div v-if="!closed && question.author_id != user.id && !question.answers.correct.some(id => id == user.id) && !question.answers.wrong.some(id => id == user.id)">
+                <el-button @click="votar=true" v-show="!votar && question.author_id != user.id" type="info" icon="el-icon-edit" size="small" plain round>VOTAR</el-button>
                 
                 <div class="box-select" v-show="votar">    
                     <el-popover
@@ -106,7 +104,7 @@ export default {
     methods: {
         formatDate(date) {
             date = new Date(date)
-            return `${date.getDay()}/${date.getMonth()+1}/${date.getFullYear()}` 
+            return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}` 
         },
         getPicture() {
             if(this.authorInfo.photo != "") 
@@ -153,7 +151,7 @@ export default {
                 else
                     this.question.answers.wrong.push(this.user.id)
 
-                //atualizar a pontuação na navbar
+                this.$emit('refrashPoints')
                 this.loading.close()
 
             } catch(error) {

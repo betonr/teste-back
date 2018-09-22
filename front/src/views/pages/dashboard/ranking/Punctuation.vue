@@ -34,7 +34,7 @@ export default {
                 let userResponse = await User.getById(punctuation.user_id)
                 return {
                     name: userResponse.data.users.name,
-                    punctuation: punctuation.points
+                    punctuation: parseFloat(punctuation.points).toFixed(3)
                 }
             })
 

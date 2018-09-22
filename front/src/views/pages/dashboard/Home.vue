@@ -8,7 +8,7 @@
 
     <section class="timeline">
       <div v-for="question in questions" :key="question._id">
-        <a-card-question :question="question" @delete="delQuestionRenderize"/>
+        <a-card-question :question="question" @delete="delQuestionRenderize" @refrashPoints="refrashPoints" />
       </div>
     </section>
 
@@ -18,9 +18,10 @@
 <script>
 import { mapState } from 'vuex'
 import Question from '@/middleware/Question'
+import Punctuation from '@/middleware/Punctuation'
 
 import CardQuestion from '@/views/components/dashboard/shared/Card-question'
-import BoxNewQuestion from '@/views/components/dashboard/shared/box-new-question'
+import BoxNewQuestion from '@/views/components/dashboard/shared/Box-new-question'
 
 export default {
   components: {
@@ -69,6 +70,10 @@ export default {
     },
     delQuestionRenderize(id) {
       this.questions = this.questions.filter(question => question._id != id)
+    },
+    async refrashPoints(){
+        const punctuation = await Punctuation.registerByUser({ user_id: this.user.id })
+        this.$store.dispatch('auth/setPoints', punctuation.data.points)
     }
   }
 

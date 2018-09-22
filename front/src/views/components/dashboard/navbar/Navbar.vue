@@ -3,7 +3,7 @@
         <header class="header">
             <img :src="logo" title="logo" class="logo"/>
             <h1>{{ user.name }}</h1>
-            <h2 v-if="points != null"><b>PONTOS:</b> {{ points.toString() }}</h2>
+            <h2 v-if="points != null"><b>PONTOS:</b> {{ parseFloat(points).toFixed(2).toString() }}</h2>
         </header>
 
         <nav class="nav">

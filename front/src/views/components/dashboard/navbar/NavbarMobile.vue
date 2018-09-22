@@ -1,7 +1,10 @@
 <template>
     <section class="navbar-mobile">
         <div class="header">
-            <p>{{ user.name }}</p>
+            <div>
+                <p>{{ user.name }}</p>
+                <span v-if="points != null" class="points-text">PONTOS: {{ parseFloat(points).toFixed(2).toString() }}</span>
+            </div>
             <button 
                 :class="nav ? 'btn-nav active': 'btn-nav'" 
                 @click="nav = !nav">
@@ -48,7 +51,7 @@ import Links from '@/views/components/dashboard/navbar/index'
 
 export default {
     computed: {
-        ...mapState('auth', ['user']),
+        ...mapState('auth', ['user', 'points']),
         pathFull: function() {
             let route = this.$route.path
             return route
@@ -98,6 +101,12 @@ export default {
                 font-size: 1.5em
                 font-weight: 600
                 margin: 0 !important
+
+            .points-text
+                color: #FFF
+                font-size: 0.9em
+                font-weight: 400
+
             .btn-nav
                 background: none
                 border: 2px solid #CCC
