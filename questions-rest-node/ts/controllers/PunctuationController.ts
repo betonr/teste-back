@@ -7,7 +7,7 @@ export class PunctuationController {
         this.env = environment
     }
 
-    async punctuationByUser(id): Promise<Object>{
+    async punctuationByUser(id: Number): Promise<Object>{
         if(id)
             try {
                 let punctuation = await PunctuationModel.findOne({user_id: id})
@@ -35,18 +35,31 @@ export class PunctuationController {
             }
     }
 
-    async register(infos): Promise<Object>{
+    async register(user_id: Number): Promise<Object>{
         try {
-            let userInfo = await PunctuationModel.findOne({ user_id: infos.user_id })
+            let userInfo = await PunctuationModel.findOne({ user_id: user_id })
             if(userInfo == null) {
                 let insert = new PunctuationModel({
-                    user_id: infos.user_id,
+                    user_id: user_id,
                     points: 0
                 })
                 let result = await insert.save()
                 return {'points': 0}
             } else
                 return {'points': userInfo.points}
+
+        } catch(_) {
+            throw {
+                status: 500,
+                errors: "Erro interno!"
+            }
+        }
+    }
+
+    async update(user_id: Number, points: Number): Promise<Object>{
+        try {
+            let userInfo = await PunctuationModel.findOneAndUpdate({ user_id: user_id }, { points })
+            return { points: userInfo.points }
 
         } catch(_) {
             throw {

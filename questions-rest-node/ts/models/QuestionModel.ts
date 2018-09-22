@@ -4,8 +4,8 @@ export interface Question extends mongoose.Document {
     question: String,
     response: Boolean
     answers: {
-        correct: String[],
-        wrong: String[]
+        correct: Number[],
+        wrong: Number[]
     },
     author_id: Number,
     created_at: Date

@@ -1,17 +1,24 @@
 import QuestionModel from './../models/QuestionModel'
-import PunctuationModel from '../models/PunctuationModel';
+import { PunctuationController } from './PunctuationController'
+import { TransactionController } from './TransactionController'
+import { Punctuation } from '../models/PunctuationModel';
 
 export class QuestionController {
 
     env: any
+    punctuation: PunctuationController
+    transaction: TransactionController
     constructor(environment) {
         this.env = environment
+        this.punctuation = new PunctuationController(this.env)
+        this.transaction = new TransactionController(this.env)
     }
 
     async question(id): Promise<Object>{
         if(id)
             try {
                 let question = await QuestionModel.findOne({_id: id})
+                if(question == null) throw {}
                 return { question }
 
             } catch(_) {
@@ -118,31 +125,48 @@ export class QuestionController {
                     status: 409
                 }
 
-            else if(questionInfo.answers.correct.some( id => user_id.id == id) || questionInfo.answers.wrong.some( id => user_id.id == id)) 
-                throw {
-                    errors: [{ 
-                        field: ['answers'],
-                        messages: ['Você não pode votar mais de uma vez na mesma pergunta/informação!']
-                    }],
-                    status: 409
-                }
+            // else if(questionInfo.answers.correct.some( id => user_id.id == id) || questionInfo.answers.wrong.some( id => user_id.id == id)) 
+            //     throw {
+            //         errors: [{ 
+            //             field: ['answers'],
+            //             messages: ['Você não pode votar mais de uma vez na mesma pergunta/informação!']
+            //         }],
+            //         status: 409
+            //     }
 
             else {
                 //response correct
                 if(questionInfo.response == infos.response) {
                     if(questionInfo.answers.correct.length == 2) {
-                        let punctuation = await PunctuationModel.findOne({ user_id: questionInfo.author_id })
+                        //update vote - question_author
+                        let punctuationReq: any = await this.punctuation.punctuationByUser(questionInfo.author_id)
+                        let punctuation: Punctuation = punctuationReq.punctuation
                         let newPoints = punctuation.points - 1
-                        let resultUpdPoint = await PunctuationModel.findOneAndUpdate({ user_id: questionInfo.author_id }, { points: newPoints })
+                        let updPoint = await this.punctuation.update(questionInfo.author_id, newPoints)
+                        let createTransactionAuthor = await this.transaction.register({
+                            author_id: user_id.id,
+                            question_id: infos.question_id,
+                            type: "remove",
+                            points: 1
+                        })
                         
+                        //add user to list answers
                         let answers = questionInfo.answers
                         answers.correct.push(user_id.id)
                         let resultUpdQuestion = await QuestionModel.findOneAndUpdate({ _id: infos.question_id }, { answers })
                         
+                        //update vote - users who responded
                         await resultUpdQuestion.answers.correct.forEach( async id => {
-                            let punctuation = await PunctuationModel.findOne({ user_id: id })
-                            let newPoints = punctuation.points + (3/1)
-                            let result = await PunctuationModel.findOneAndUpdate({ user_id: id }, { points: newPoints })
+                            let punctuationReq: any = await this.punctuation.punctuationByUser(id)
+                            let punctuation: Punctuation = punctuationReq.punctuation
+                            let newPoints = punctuation.points + (1/3)
+                            let result = await this.punctuation.update(id, newPoints)
+                            let createTransactionUser = await this.transaction.register({
+                                author_id: id,
+                                question_id: infos.question_id,
+                                type: "add",
+                                points: (1/3)
+                            })
                         })
                         return { correct: true }
                         
@@ -151,23 +175,41 @@ export class QuestionController {
                         let allPoints = Math.pow(2, count-3)
                         let lastSumPoints = Math.pow(2, count-1-3) 
                         
+                        //add user to list answers
                         let answers = questionInfo.answers
                         answers.correct.push(user_id.id)
                         let resultUpdQuestion = await QuestionModel.findOneAndUpdate({ _id: infos.question_id }, { answers })
                         
+                        //update vote - users who responded
                         await resultUpdQuestion.answers.correct.forEach( async id => {
-                            let punctuation = await PunctuationModel.findOne({ user_id: id })
+                            let punctuationReq: any = await this.punctuation.punctuationByUser(id)
+                            let punctuation: Punctuation = punctuationReq.punctuation
                             let newPoints = id != user_id ? punctuation.points - lastSumPoints : punctuation.points
                             newPoints += (allPoints/count)
-                            let result = await PunctuationModel.findOneAndUpdate({ user_id: id }, { points: newPoints })
+                            let result = await this.punctuation.update(id, newPoints)
+                            let createTransactionUser = await this.transaction.register({
+                                author_id: id,
+                                question_id: infos.question_id,
+                                type: "add",
+                                points: (allPoints/count)
+                            })
                         })
 
-                        let punctuation = await PunctuationModel.findOne({ user_id: questionInfo.author_id })
+                        //update vote - question_author
+                        let punctuationReq: any = await this.punctuation.punctuationByUser(questionInfo.author_id)
+                        let punctuation: Punctuation = punctuationReq.punctuation                        
                         let newPoints = punctuation.points - (allPoints-lastSumPoints)
-                        let resultUpdPoint = await PunctuationModel.findOneAndUpdate({ user_id: questionInfo.author_id }, { points: newPoints })
+                        let resultUpdPoint = await this.punctuation.update(questionInfo.author_id, newPoints)
+                        let createTransactionAuthor = await this.transaction.register({
+                            author_id: user_id.id,
+                            question_id: infos.question_id,
+                            type: "remove",
+                            points: (allPoints-lastSumPoints)
+                        })
                         return { correct: true }
                         
                     } else {
+                        //add user to list answers
                         let answers = questionInfo.answers
                         answers.correct.push(user_id.id)
                         let result = await QuestionModel.findOneAndUpdate({ _id: infos.question_id }, { answers })
@@ -177,18 +219,35 @@ export class QuestionController {
                 //response wrong
                 } else {
                     if(questionInfo.answers.wrong.length == 2) {
-                        let punctuation = await PunctuationModel.findOne({ user_id: questionInfo.author_id })
+                        //update vote - question_author
+                        let punctuationReq: any = await this.punctuation.punctuationByUser(questionInfo.author_id)
+                        let punctuation: Punctuation = punctuationReq.punctuation
                         let newPoints = punctuation.points + 1
-                        let resultUpdPoint = await PunctuationModel.findOneAndUpdate({ user_id: questionInfo.author_id }, { points: newPoints })
-                        
+                        let resultUpdPoint = await this.punctuation.update(questionInfo.author_id, newPoints)
+                        let createTransactionAuthor = await this.transaction.register({
+                            author_id: user_id.id,
+                            question_id: infos.question_id,
+                            type: "add",
+                            points: 1
+                        })
+
+                        //add user to list answers
                         let answers = questionInfo.answers
                         answers.wrong.push(user_id.id)
                         let resultUpdQuestion = await QuestionModel.findOneAndUpdate({ _id: infos.question_id }, { answers })
                         
+                        //update vote - users who responded
                         await resultUpdQuestion.answers.wrong.forEach( async id => {
-                            let punctuation = await PunctuationModel.findOne({ user_id: id })
-                            let newPoints = punctuation.points - (3/1)
-                            let result = await PunctuationModel.findOneAndUpdate({ user_id: id }, { points: newPoints })
+                            let punctuationReq:any = await this.punctuation.punctuationByUser(id)
+                            let punctuation: Punctuation = punctuationReq.punctuation                            
+                            let newPoints = punctuation.points - (1/3)
+                            let result = await this.punctuation.update(id, newPoints)
+                            let createTransactionUser = await this.transaction.register({
+                                author_id: id,
+                                question_id: infos.question_id,
+                                type: "remove",
+                                points: (1/3)
+                            })
                         })
                         return { correct: false }
                         
@@ -196,24 +255,42 @@ export class QuestionController {
                         let count = questionInfo.answers.wrong.length+1
                         let allPoints = Math.pow(2, count-3)
                         let lastSumPoints = Math.pow(2, count-1-3) 
-                        
+
+                        //add user to list answers
                         let answers = questionInfo.answers
                         answers.wrong.push(user_id.id)
                         let resultUpdQuestion = await QuestionModel.findOneAndUpdate({ _id: infos.question_id }, { answers })
                         
+                        //update vote - users who responded
                         await resultUpdQuestion.answers.wrong.forEach( async id => {
-                            let punctuation = await PunctuationModel.findOne({ user_id: id })
+                            let punctuationReq: any = await this.punctuation.punctuationByUser(id)
+                            let punctuation: Punctuation = punctuationReq.punctuation
                             let newPoints = id != user_id ? punctuation.points + lastSumPoints : punctuation.points
                             newPoints -= (allPoints/count)
-                            let result = await PunctuationModel.findOneAndUpdate({ user_id: id }, { points: newPoints })
+                            let result = await this.punctuation.update(id, newPoints)
+                            let createTransactionUser = await this.transaction.register({
+                                author_id: id,
+                                question_id: infos.question_id,
+                                type: "remove",
+                                points: (allPoints/count)
+                            })
                         })
 
-                        let punctuation = await PunctuationModel.findOne({ user_id: questionInfo.author_id })
+                        //update vote - question_author
+                        let punctuationReq: any = await this.punctuation.punctuationByUser(questionInfo.author_id)
+                        let punctuation: Punctuation = punctuationReq.punctuation
                         let newPoints = punctuation.points + (allPoints-lastSumPoints)
-                        let resultUpdPoint = await PunctuationModel.findOneAndUpdate({ user_id: questionInfo.author_id }, { points: newPoints })
+                        let resultUpdPoint = await this.punctuation.update(questionInfo.author_id, newPoints)
+                        let createTransactionAuthor = await this.transaction.register({
+                            author_id: user_id.id,
+                            question_id: infos.question_id,
+                            type: "add",
+                            points: (allPoints-lastSumPoints)
+                        })
                         return { correct: false }
                         
                     } else {
+                        //add user to list answers
                         let answers = questionInfo.answers
                         answers.wrong.push(user_id.id)
                         let result = await QuestionModel.findOneAndUpdate({ _id: infos.question_id }, { answers })
@@ -224,6 +301,7 @@ export class QuestionController {
             }
             
         } catch(error) {
+            console.log(error)
             if(error.errors == undefined)
                 throw {
                     errors: [{

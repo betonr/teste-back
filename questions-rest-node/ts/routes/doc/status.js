@@ -5,6 +5,6 @@
  * @apiSuccessExample {json} Sucess
  *    HTTP/1.1 200 OK
  *    {
- *      "status": "API ... - Rodando com sucesso"
+ *      "status": "API QUESTION - RODANDO COM SUCESSO"
  *    }
  */

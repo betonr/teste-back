@@ -1,9 +1,9 @@
 export const environment = {
-  name: process.env.NAME || 'API BASE',
+  name: process.env.NAME || 'API QUESTION',
   pathBase: process.env.PATHBASE || '',
   port: process.env.PORT || 3000,
   db: {
-    database: process.env.DB_NAME || 'api-dev-base',
+    database: process.env.DB_NAME || 'questions',
     user: process.env.DB_USER || 'user',
     password: process.env.DB_PASS || 'test',
     options: {

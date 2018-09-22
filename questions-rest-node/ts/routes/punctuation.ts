@@ -24,7 +24,7 @@ export default (app, environment): void => {
     app.post(environment.pathBase+"/punctuation/register",
         authMiddlewares.authentication,
         validate(punctuationMiddlewares.register),
-        (req, res) => Punctuation.register(req.body)
+        (req, res) => Punctuation.register(req.body.user_id)
             .then( response => res.status(201).send(response) )
             .catch( error => res.status(error.status).send({errors: error.errors}) ))
 }
