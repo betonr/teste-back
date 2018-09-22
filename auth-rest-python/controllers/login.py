@@ -71,7 +71,7 @@ class Login():
             if('error' in user):
                 raise Exception
             else:
-                return {"id": user['user']['id']}
+                return {"id": user['user']['id'], "func": user['user']['func']}
 
         except Exception as e:
             return {
