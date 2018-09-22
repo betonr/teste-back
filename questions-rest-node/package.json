@@ -8,7 +8,8 @@
     "start": "node dist/main.js",
     "build": "tsc -w",
     "docs": "apidoc -i ts/routes/doc -o public/doc",
-    "test": "ts-node __test__/startup.ts"
+    "test": "ts-node __test__/startup.ts",
+    "docker": "npm install && npm run docs && npm start"
   },
   "apidoc": {
     "name": "Documentação da API de questões",
