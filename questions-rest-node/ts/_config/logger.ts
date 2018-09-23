@@ -30,6 +30,13 @@ export class Logger {
 
     logs(): winston.Winston {
         let logger = this.create()
+
+        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+            logger.add(new winston.transports.Console({
+                format: (<any>winston).format.simple()
+            }))
+        }
+        
         return logger
     }
 
