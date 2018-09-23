@@ -31,13 +31,8 @@ export class Server {
         (<any>mongoose).Promise = global.Promise
         
         let cn: string;
-        if(process.env.NODE_ENV && process.env.NODE_ENV=="production"){
-            cn = process.env.DB_URL ? process.env.DB_URL : 
-                `mongodb://${environment.db.user}:${environment.db.password}@${environment.db.options.host}:${environment.db.options.port}/${environment.db.database}`
-        } else{
-            cn = process.env.DB_URL ? process.env.DB_URL : 
-                `mongodb://localhost:27017/${environment.db.database}`
-        }
+        cn = process.env.DB_URL ? process.env.DB_URL : 
+            `mongodb://${environment.db.user}:${environment.db.password}@${environment.db.options.host}:${environment.db.options.port}/${environment.db.database}?authSource=admin`
         return mongoose.connect(cn)
     }
 
