@@ -4,8 +4,8 @@ export const environment = {
   port: process.env.PORT || 3000,
   db: {
     database: process.env.DB_NAME || 'questions',
-    user: process.env.DB_USER || 'user',
-    password: process.env.DB_PASS || 'test',
+    user: process.env.DB_USER || 'mongo',
+    password: process.env.DB_PASS || 'mongo',
     options: {
       dialect: process.env.DIALECT || 'mongodb',
       host: process.env.HOST || 'localhost',

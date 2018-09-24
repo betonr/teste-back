@@ -55,7 +55,7 @@ export default {
             vm.$validator.validateAll().then( result => {
                 if(result) vm.$emit('submit', {
                     email: vm.email,
-                    password: ''
+                    password: vm.senha
                 })
             });
         }

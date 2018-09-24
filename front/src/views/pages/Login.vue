@@ -57,6 +57,9 @@ export default {
                 })
             
             } catch(error) {
+                this.$store.dispatch('auth/setToken', null)
+                this.$store.dispatch('auth/setUser', null)
+
                 this.loading.close()
                 this.$message({
                     dangerouslyUseHTMLString: true,
@@ -134,8 +137,8 @@ export default {
             color: #FFF !important
 
 .box-btn-admin
-        border-top: 1px solid #CCC
-        padding: 10px 0
-        display: flex
-        justify-content: center
+    border-top: 1px solid #CCC
+    padding: 10px 0
+    display: flex
+    justify-content: center
 </style>

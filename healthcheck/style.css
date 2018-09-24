@@ -1,0 +1,39 @@
+.container {
+    width: 90%;
+    display: block;
+    margin: 15px auto;
+}
+
+.container h1 {
+    text-align: center;
+}
+
+.container button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #2eb82e;
+    text-transform: uppercase;
+    color: #FFF;
+    font-weight: 600;
+    cursor: pointer;
+}
+.container button:hover {
+    background: #29a329;
+}
+
+.container table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 100%;
+}
+.container td, tr {
+    border: 1px solid #CCC;
+    text-align: center;
+    padding: 8px;
+}
+.container tr.body:hover {
+    background: #EFEFEF !important;
+}

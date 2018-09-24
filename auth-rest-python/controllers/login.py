@@ -38,16 +38,15 @@ class Login():
                 raise Exception(400)
             
             user = User.user_by_email(credentials['email'])
-            user_info = user['user']
             if('error' in user):
                 raise Exception(404)
-            elif(user_info['func'] != Function.ADMINISTRATOR.value):
+            elif(user['user']['func'] != Function.ADMINISTRATOR.value):
                 raise Exception(403)
             elif(not User.compare_password(credentials['email'], credentials['password'])):
                 raise Exception(401)
 
-            access_token = create_access_token(identity=user_info['email'],expires_delta=False)
-            return {'token': access_token, 'me': user_info}
+            access_token = create_access_token(identity=user['user']['email'],expires_delta=False)
+            return {'token': access_token, 'me': user['user']}
 
         except Exception as e:
             message = {

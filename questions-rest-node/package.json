@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon dist/main.js",
     "start": "node dist/main.js",
-    "build": "tsc -w",
+    "build": "tsc",
     "docs": "apidoc -i ts/routes/doc -o public/doc",
     "test": "ts-node __test__/startup.ts",
     "docker": "npm install && npm run docs && npm run build && npm start"

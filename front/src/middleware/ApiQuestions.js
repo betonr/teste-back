@@ -4,12 +4,12 @@ import store from '@/store'
 export default () => {
   return store.state.auth.token ? 
     axios.create({
-      baseURL: `http://localhost:3000/`,
+      baseURL: process.env.urlQuestions,
       headers: {
         authorization: store.state.auth.token
       }
     }) :
     axios.create({
-      baseURL: `http://localhost:3000/`
+      baseURL: process.env.urlQuestions
     })
 }
