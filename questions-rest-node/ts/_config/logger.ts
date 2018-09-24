@@ -9,7 +9,7 @@ export class Logger {
         }
     }
 
-    create(): winston.Winston {
+    create() {
         return (<any>winston).createLogger({
             format: (<any>winston).format.combine(
                 (<any>winston).format.timestamp({
@@ -28,7 +28,7 @@ export class Logger {
         })
     }
 
-    logs(): winston.Winston {
+    logs() {
         let logger = this.create()
 
         if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
