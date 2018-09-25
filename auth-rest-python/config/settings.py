@@ -21,7 +21,18 @@ class Production(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
+class Test(object):
+    """
+    Production environment configurations
+    """
+    DEBUG = False
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1:3306/auth'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = 'jwt-secret-key-test'
+
 settings = {
     'development': Development,
-    'production': Production,
+    'test': Test,
+    'production': Production
 }
