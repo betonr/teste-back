@@ -1,4 +1,4 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+import hashlib
 
 from models.baseModel import BaseModel, db
 from controllers.function import Function
@@ -14,7 +14,9 @@ class UserModel(BaseModel, db.Model):
     func = db.Column(db.Integer)
 
     def save(self):
-        self.password = generate_password_hash(self.password)
+        password = hashlib.md5()
+        password.update(self.password.encode("utf-8"))
+        self.password = password.hexdigest()
         db.session.add(self)
         db.session.commit()
     
@@ -32,4 +34,7 @@ class UserModel(BaseModel, db.Model):
         }
 
     def valid_password(self, password):
-        return check_password_hash(self.password, password)
+        newPassword = hashlib.md5()
+        newPassword.update(password.encode("utf-8"))
+        newPassword = newPassword.hexdigest()
+        return self.password == newPassword
