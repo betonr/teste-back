@@ -84,7 +84,7 @@ versions:
 
       Validate:
         label: Validate
-        method: POST
+        method: GET
         description: validação pelo token de usuário
         uri: /auth/validate/{token}
         category: Auth
