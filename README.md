@@ -1,60 +1,55 @@
 # Teste back-end Allgoo
+ > CASE: https://github.com/Allgoo/teste-back
 
-Caros candidatos, leiam atentamente as instruções neste README para realizar o teste.
+# APLICAÇÃO
+ > DEMO: https://betonoronha.com.br/portal
+ 
+ # ARQUITETURA
+ Baseada no conceito de micro serviços, foi construida uma arquitetura com dockers que conta com dois serviços no back-end e front-end servido estaticamente através do orquestrador web (NGINX);
+ 
+ imagem da arquitetura ...
+ 
+ # EXECUÇÃO DOS SERVIÇOS
+ * **pré-requisito:**
+    - instalar docker (18+)
+    - instalar docker-compose (1.22+)
+    - possuir conexão com a internet
+  
+ * **executar:**
+    - link: https://github.com/betonr/teste-back/tree/master/dockers
+ 
+ # ESPECIFICAÇÃO
+ * **front-end:**
+   Desenvolvido com o framework Vue.js, a aplicação é uma SPA(single page application) na qual é servida estaticamente pelo servidor web (NGINX);
+   
+   O front-end conta com dois setores da aplicação: o de usuário comum e o de usuário administrador
+      1. O setor do usuário comum, posssibilita o controle de publicações, a votação em uma determinada informação publica(que no seja sua) e os ranking dos usuários cadastrados(por honestidade e/ou por pontuação). Para acessar esse setor, faz-se necessário realizar o login via facebook;
+      2. Já o setor de aministradores, possiblita verificar os logs de transações (realizadas ao transferir pontos a outros usuários depois de uma votação). Para acessar esse setor, o admin deve clicar no botão "login - administrador" e preencher os dados com:
+         - email: admin@admin.com
+         - senha: admin
+      
+   - link: https://github.com/betonr/teste-back/tree/master/front
+   
+ * **Micro serviço de autenticação:**
+   O micro serviço de 'autenticaço' é responsável pelo controle de usuário (CRUD e authenticação) da aplicação como um todo. Nesse micro serviço, foi utilizado o banco de dados relacional, chamado MySQL.
+    - linguagem: Python
+    - banco de dados: MySQL
+    - framework: Flask (python 3)
+    - link da documentação do microserviço: https://betonoronha.com.br/docs/auth/
+    - link do código e demais infos: https://github.com/betonr/teste-back/tree/master/auth-rest-python
 
-> Antes de começar, prepare seu ambiente.
-
-**Este teste requer:**
-- Sua IDE favorita
-- Ambiente de desenvolvimento com Python 3.5+ ou Node.js 8+ [explicar o porquê do uso de uma ou de outra linguagem]
-- Banco de dados (MongoDB, MySQL) [avaliar a necessidade para uso de banco relacional ou não]
-
---------
-
-## Tarefas do teste:
-
-**NOTE:** Você está livre em usar o framework que desejar. Apenas, gostaria de uma explicação do porquê da sua escolha.
-
-**Funções necessárias:**
-  - O usuário precisa se cadastrar e se logar via Rede Social (Facebook ou Twitter ou Google);
-  - O usuário poderá compartilhar uma informação pessoal e ter a possibilidade de marcar se ela é verdadeira ou não;
-  - Ao compartilhar irá para um mural que poderá ser visualizado por todos os usuários;
-  - Neste post outros podem votar se acreditam ou não na informação;
-  - Ter um ranking do usuário de acordo com as assertividades dos usuários classificando entre honesto ou mentiroso;
-  - Se mais de 3 usuários acertarem o que a informação é, o usuário que deu a informação perde 1 ponto que será dividido entre os 3 e a cada novo usuário o ponto dobra. Exemplo:
-
-    - 3 pessoas acertam = 1 ponto / 3 usuários
-    - 4 pessoas acertam = 2 pontos / 4 usuários
-    - 5 pessoas acertam = 4 pontos / 5 usuários
+ * **Micro serviço de questões:**
+   O micro serviço de 'questões' é responsável pelo controle das publicações realizadas na aplicação, ou seja, é através dele que são publicadas as questões/informações para sejam respondidas por outros usuário. Além disso, é esse serviço que faz todo o controle de pontuação e transações da aplicação. Para armazenamento dos dados foi utilizado o banco de dados não relacional, chamado MongoDB.
+    - linguagem: Node
+    - banco de dados: MongoDB
+    - framework: Express (Node.js 8)
+    - link da documentação do microserviço: https://betonoronha.com.br/docs/question/
+    - link do código e demais infos: https://github.com/betonr/teste-back/tree/master/questions-rest-node
     
-  - Quando os usuários erram a informação, o ponto é calculado pela quantidade de usuários que erraram (usando o mesmo critério acima), todos os pontos vão para o usuário que deu a informação e são retirados, dos usuários que erraram, os pontos correspondentes. Exemplo:
-    - 4 pessoas erraram, cada uma perde 0.5 ponto = (2 pontos / 4 usuários);
-    - O usuário que indicou a informação ganha 4 pontos;
-    
-  - Cada post tem um tempo de duração de exatamente um dia para ser votado. Quando passa desse tempo, encerram-se as votações;
-  - Toda transação deve ter Log e esses Logs poderão ser listados por um login admin;
-    
-## O que queremos de você nesse teste
-- Crie em API e/ou microserviços;
-- Documente muito bem seu sistema; (pode usar a ferramenta que achar adequada)
-- Use docker;
-- Implemente testes;
-- Faça o deploy do seu sistema em algum server em cloud; (heroku, etc)
-
-## Instruções adicionais
-
-- Faça um fork do repositório
-- Testes não são opcionais
-- Depois de terminado, envie-nos o link do repositório, a documentação e o link da aplicação.
-- Deixe comentários, caso tenha alguma dúvida.
-- Implementações sem um README serão automaticamente rejeitadas.
-
-## Bonus / Atividades Opcionais
-
-- Código limpo
-- Conhecimento do fluxo da aplicação
-- Conhecimento das melhores práticas.
-- Criar um endpoint para healthcheck 
-   - para a rota `/healthcheck`
-   - proponha quais seriam as informações essenciais em um healthcheck ou se não tem necessidade.
-- nginx ou alternativa simples de webserver
+ * **Healthcheck:**
+   Para a consulta do status dos serviços, foi implementado uma página web que faz as requisições aos microserviços e devolve se está 'OK', além disso, temos o portainer que possíbilita verificação das informações e logs dos containers executados.
+    - link da página estática: https://betonoronha.com.br/healthcheck/
+    - link do portainer: https://betonoronha.com.br/dockers/
+      - usuário do portainer: admin
+      - senha do portainer: adminadmin 
+  
