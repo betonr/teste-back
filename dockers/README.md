@@ -7,11 +7,12 @@
 ### **Executar todos os serviços (passo a passo):**
   1) clone o repositório: git clone https://github.com/betonr/teste-back.git
   2) cd teste-back/dockers
-  3) docker-compose up -d
+  3) docker-compose build
+  4) docker-compose up -d
   
   **subir o banco de dados (mysql)**
   
-  4) executar o arquivo setupDatabase.sh
+  5) executar o arquivo setupDatabase.sh
       - Ex.(ubuntu): sh setupDatabase.sh
     
   **confira o serviços:**
