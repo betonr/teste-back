@@ -1,1 +1,1 @@
-INSERT INTO users(name, email, photo, password, func, created_on, updated_on) VALUES ("Administrador", "admin@admin.com", "", "pbkdf2:sha256:50000$NDSKqfxp$1719ade81803a54a46613b54c769cf4ac1a3abb82b5bbc79e5edd5b38a13aae3", 2, "2018/09/21", "2018/09/21");
+INSERT INTO users(name, email, photo, password, func, created_on, updated_on) VALUES ("Administrador", "admin@admin.com", "", "21232f297a57a5a743894a0e4a801fc3", 2, "2018/09/21", "2018/09/21");
