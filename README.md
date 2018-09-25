@@ -7,7 +7,7 @@
  # ARQUITETURA
  Baseada no conceito de micro serviços, foi construida uma arquitetura com dockers que conta com dois serviços no back-end e front-end servido estaticamente através do orquestrador web (NGINX);
  
- imagem da arquitetura ...
+ ![diagram architecture_full](https://github.com/betonr/teste-back/blob/master/diagram_test_allgoo_back.jpg)
  
  # EXECUÇÃO DOS SERVIÇOS
  * **pré-requisito:**
@@ -15,7 +15,7 @@
     - instalar docker-compose (1.22+)
     - possuir conexão com a internet
   
- * **executar:**
+ * **executar (passo a passo):**
     - link: https://github.com/betonr/teste-back/tree/master/dockers
  
  # ESPECIFICAÇÃO
