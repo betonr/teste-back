@@ -1,0 +1,169 @@
+configuration:
+  title: Teste Allgoo back-end
+  description: Documentação da API de Autenticação
+  uri: http://localhost:8086/api/auth
+
+categories:
+  Status:
+    description: Status do serviço
+  Auth:
+    description: Autenticação
+  Users:
+    description: Usuários
+
+versions:
+  v1.0:
+    methods:
+      Status:
+        label: Status
+        method: GET
+        description: Verificando status do serviço
+        uri: /
+        category: Status
+        response_body:
+          type: object
+          properties:
+            status: 
+              type: string
+              sample: API AUTH - RODANDO COM SUCESSO
+        response_codes:
+          - code: 200
+    
+      Facebook:
+        label: Facebook
+        method: GET
+        description: login via token (facebook)
+        uri: /auth/facebook/{token}
+        category: Auth
+        request_parameters:
+          token: 
+            type: string
+            description: Token pessoal enviado pelo facebook
+        response_body:
+          type: object
+          properties:
+            access_token: 
+              type: string
+            user:
+              type: User
+        response_codes:
+          - code: 201
+          - code: 403
+            message: Invalid OAuth access token
+
+      Admin:
+        label: Administrador
+        method: POST
+        description: login para administradores
+        uri: /auth/admin
+        category: Auth
+        request_body:
+          type: object
+          properties:
+            email: 
+              type: string
+            password: 
+              type: string
+        response_body:
+          type: object
+          properties:
+            access_token: 
+              type: string
+            user:
+              type: User
+        response_codes:
+          - code: 200
+          - code: 400
+            message: Invalid params - email and password are required
+          - code: 401
+            message: Email or password invalid
+          - code: 403
+            message: You do not have administrator permission
+          - code: 404
+            message: User not Found
+
+      Validate:
+        label: Validate
+        method: POST
+        description: validação pelo token de usuário
+        uri: /auth/validate/{token}
+        category: Auth
+        request_parameters:
+          token: 
+            type: string
+            description: Token do usuário
+        response_body:
+          type: object
+          properties:
+            id: 
+              type: number
+              sample: 1
+            func:
+              type: number
+              sample: 2
+        response_codes:
+          - code: 200
+          - code: 403
+            message: Invalid OAuth access token
+      
+      Users:
+        label: Usuários
+        method: GET
+        description: lista de usuários
+        uri: /auth/user
+        category: Users
+        response_body:
+          type: array
+          items: 
+            type: object
+            properties:
+              user: 
+                type: User
+        response_codes:
+          - code: 200
+
+      User:
+        label: Usuário por id
+        method: GET
+        description: get usuário por id
+        uri: /auth/user/{id}
+        category: Users
+        request_parameters:
+          id: 
+            type: string
+            description: Tid do usuário
+        response_body:
+          type: object
+          properties:
+            user: 
+              type: User
+        response_codes:
+          - code: 200
+          - code: 404
+            message: 'User not found!'
+
+    types:
+      User: 
+        category: Users
+        description: Usuário
+        item:
+          type: object
+          properties:
+            id: 
+              type: number
+              sample: 1
+            name:
+              type: string
+            email:
+              type: string
+            func:
+              type: number
+              sample: 2
+            photo:
+              type: string
+            created_on:
+              type: string
+              sample: 2018/05/02
+            updated_on:
+              type: string
+              sample: 2018/05/02

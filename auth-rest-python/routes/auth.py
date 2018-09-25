@@ -22,4 +22,4 @@ def login_validate(token):
     result = Login.validate(token)
     if('error' in result): 
         return jsonify({ 'message': result['error']['message'] }), result['error']['status']
-    return jsonify(result), 201
+    return jsonify(result), 200
