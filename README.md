@@ -28,7 +28,7 @@
          - email: admin@admin.com
          - senha: admin
       
-   - link: https://github.com/betonr/teste-back/tree/master/front
+   - link do código e demais infos: https://github.com/betonr/teste-back/tree/master/front
    
  * **Micro serviço de autenticação:**
    O micro serviço de 'autenticaço' é responsável pelo controle de usuário (CRUD e authenticação) da aplicação como um todo. Nesse micro serviço, foi utilizado o banco de dados relacional, chamado MySQL.
