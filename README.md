@@ -7,7 +7,7 @@
  # ARQUITETURA
  Baseada no conceito de micro serviços, foi construida uma arquitetura com dockers que conta com dois serviços no back-end e front-end servido estaticamente através do orquestrador web (NGINX);
  
- imagem da arquitetura ...
+ ![diagram architecture_full](https://github.com/betonr/teste-back/blob/master/diagram_test_allgoo_back.jpg)
  
  # EXECUÇÃO DOS SERVIÇOS
  * **pré-requisito:**
@@ -15,7 +15,7 @@
     - instalar docker-compose (1.22+)
     - possuir conexão com a internet
   
- * **executar:**
+ * **executar (passo a passo):**
     - link: https://github.com/betonr/teste-back/tree/master/dockers
  
  # ESPECIFICAÇÃO
@@ -28,7 +28,7 @@
          - email: admin@admin.com
          - senha: admin
       
-   - link: https://github.com/betonr/teste-back/tree/master/front
+   - link do código e demais infos: https://github.com/betonr/teste-back/tree/master/front
    
  * **Micro serviço de autenticação:**
    O micro serviço de 'autenticaço' é responsável pelo controle de usuário (CRUD e authenticação) da aplicação como um todo. Nesse micro serviço, foi utilizado o banco de dados relacional, chamado MySQL.
