@@ -8,7 +8,7 @@
 * **pré-requisitos:**
   - instalar python (3.5+)
   - instalar MySQL ou subir um container do MySQL (https://hub.docker.com/_/mysql/)
-  - instalar de client do MySQL
+  - instalar client do MySQL
       - Ex.(linux-debian) => 'default-libmysqlclient-dev'
           - sudo apt-get install -y default-libmysqlclient-dev
   
